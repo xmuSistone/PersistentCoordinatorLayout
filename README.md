@@ -30,5 +30,39 @@ persistent fling with coordinatorLayout
 }
 ```
 是的，就是这么任性！我们自己实现一个HookedScroller，然后我们可以随心所欲，为所欲为！
+紧接着，我们在HookedScroller的fling回调函数中，可以监听到fling动画的duration：
+```kotlin
+/**
+ * 监听OverScroller.fling()，为后续的syncFling埋下种子
+ */
+override fun fling(...) {
+    super.fling(...)
+    if (velocityY < -200) {
+        // 获取fling动画时长
+        val durationField = scrollerYObj.javaClass.getDeclaredField("mDuration")
+        durationField.isAccessible = true
+        val duration = durationField.get(scrollerYObj) as Int
 
-
+        // 在fling动画结束的前一帧，用handler启动fling传导
+        val flingInterval = duration - refreshInterval
+        uiHandler.sendEmptyMessageDelayed(1, flingInterval.toLong())
+    }
+}
+```
+看到这里你可能就大致明白了。获取到fling动画的duration，然后在经过duration时间后，用Handler将OverScroller的速率，传递给RecyclerView。具体实现是这样的：
+```kotlin
+/**
+ * fling传导
+ */
+ private fun syncFling() {
+    val velocityY = this.getVelocityY()
+    if (velocityY < -200 && persistentProvider != null) {
+        val currentItem = persistentProvider!!.getViewPager().currentItem
+        val currentScrollableView = persistentProvider!!.getRecyclerView(currentItem)
+        if (currentScrollableView is RecyclerView) {
+            currentScrollableView.fling(0, -velocityY)
+        }
+    }
+}
+```
+所以，这一路看下来，逻辑容易理解，代码也挺少！
