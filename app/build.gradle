@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -34,4 +32,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation project(path: ':library')
+
+    implementation 'com.rishabhharit.roundedimageview:RoundedImageView:0.8.4'
+    implementation 'me.relex:circleindicator:2.1.4'
 }

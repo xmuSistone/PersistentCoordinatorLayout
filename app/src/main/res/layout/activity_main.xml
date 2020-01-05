@@ -1,69 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.stone.persistent.library.PersistentCoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:fadingEdge="none"
-        app:elevation="0dp"
-        tools:ignore="WebViewLayout">
+    <!--1. 顶部Header部分-->
 
-        <WebView
-            android:id="@+id/main_webview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll" />
+    <include layout="@layout/home_toolbar" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#f0f0f0"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="tab1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="#f0f0f0"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="tab2" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="#f0f0f0"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="tab3" />
-
-        </LinearLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <com.stone.persistent.library.PersistentViewPager
-        android:id="@+id/viewpager"
+    <com.stone.persistent.library.PersistentCoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        tools:context=".MainActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fadingEdge="none"
+            app:elevation="0dp"
+            tools:ignore="WebViewLayout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll">
+
+                <include layout="@layout/home_top_content" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#f0f0f0"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="tab1" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="#f0f0f0"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="tab2" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="#f0f0f0"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="tab3" />
+
+            </LinearLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.stone.persistent.library.PersistentViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-</com.stone.persistent.library.PersistentCoordinatorLayout>
+    </com.stone.persistent.library.PersistentCoordinatorLayout>
+
+</LinearLayout>
