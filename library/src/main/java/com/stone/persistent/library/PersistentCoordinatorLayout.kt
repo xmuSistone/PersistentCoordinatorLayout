@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.WindowManager
 import android.view.animation.Interpolator
@@ -41,17 +40,6 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
             throw RuntimeException("CustCoordinatorLayout's first child must be AppbarLayout")
         }
     }
-
-    override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
-        super.onScrollChanged(l, t, oldl, oldt)
-        Log.e("LeiTest", "test 04")
-
-    }
-
-    override fun computeScroll() {
-        super.computeScroll()
-    }
-
 
     /**
      * 反射behavior塞入hookScroller
@@ -160,22 +148,6 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
             }
         }
 
-        override fun startScroll(startX: Int, startY: Int, dx: Int, dy: Int) {
-            super.startScroll(startX, startY, dx, dy)
-            Log.e("LeiTest", "test 01")
-        }
-
-        override fun startScroll(startX: Int, startY: Int, dx: Int, dy: Int, duration: Int) {
-            super.startScroll(startX, startY, dx, dy, duration)
-            Log.e("LeiTest", "test 02")
-
-        }
-
-        override fun computeScrollOffset(): Boolean {
-            return super.computeScrollOffset()
-            Log.e("LeiTest", "test 03")
-        }
-
         /**
          * 监听OverScroller.fling()，为后续的syncFling埋下种子
          */
@@ -192,7 +164,6 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
             overY: Int
         ) {
             super.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY, overX, overY)
-            Log.e("LeiTest", "test 05")
 
             if (velocityY < -200) {
                 // 获取fling动画时长
@@ -223,7 +194,6 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
             val mCurrVelocity = mCurrVelocityField.get(scrollerYObj) as Float
             return mCurrVelocity.toInt()
         }
-
 
         /**
          * 获取刷新频率
