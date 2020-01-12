@@ -9,7 +9,7 @@ import androidx.viewpager.widget.ViewPager
 /**
  * 加强垂直滑动时的"非拦截处理"，交给底层RecyclerView消费
  */
-class PersistentViewPager : ViewPager {
+class PersistentViewPager(context: Context, attrs: AttributeSet?) : ViewPager(context, attrs) {
 
     private val mTouchSlop: Int
     private var downX: Float = 0f
@@ -22,9 +22,6 @@ class PersistentViewPager : ViewPager {
         private const val DRAG_VERTICAL = 1
         private const val DRAG_HORIZONTAL = 2
     }
-
-    @JvmOverloads
-    constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs)
 
     init {
         val configuration = ViewConfiguration.get(context)

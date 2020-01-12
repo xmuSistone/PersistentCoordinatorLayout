@@ -19,22 +19,14 @@ import com.google.android.material.appbar.AppBarLayout
  * 定制的CoordinatorLayout，第一个子View必须为AppbarLayout
  * 如果底部不用ViewPager的话，可以设置其adapter->getCount=0
  */
-class PersistentCoordinatorLayout : CoordinatorLayout {
+class PersistentCoordinatorLayout @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : CoordinatorLayout(context, attrs, defStyleAttr) {
 
     private lateinit var appBarLayout: AppBarLayout
     private var overScroller: HookedScroller? = null
 
     private var persistentProvider: PersistentProvider? = null
-
-    /**
-     * 构造函数
-     */
-    @JvmOverloads
-    constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
 
     override fun onFinishInflate() {
         super.onFinishInflate()
