@@ -33,6 +33,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation project(path: ':library')
 
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
     implementation 'com.rishabhharit.roundedimageview:RoundedImageView:0.8.4'
     implementation 'me.relex:circleindicator:2.1.4'
 }

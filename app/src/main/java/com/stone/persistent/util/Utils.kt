@@ -7,7 +7,7 @@ import android.os.Build
 import android.view.View
 import android.view.WindowManager
 import java.lang.reflect.Field
-
+import android.util.DisplayMetrics
 
 class Utils {
 
@@ -54,6 +54,15 @@ class Utils {
         fun dp2px(context: Context, dpValue: Float): Float {
             var scale = context.getResources().getDisplayMetrics().density;
             return dpValue * scale + 0.5f
+        }
+
+        /**
+         * 获取屏幕宽度
+         */
+        fun getScreenWidth(activity: Activity): Int {
+            val dm = DisplayMetrics()
+            activity.windowManager.defaultDisplay.getMetrics(dm)
+            return dm.widthPixels
         }
     }
 }
