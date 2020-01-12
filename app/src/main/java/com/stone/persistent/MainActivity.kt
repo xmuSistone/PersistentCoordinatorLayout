@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun bindRefreshLayout() {
         main_refresh_layout.setOnRefreshListener {
-            netHandler!!.sendEmptyMessageDelayed(1, 2000)
+            netHandler!!.sendEmptyMessageDelayed(1, 500)
         }
 
         val purposeListener = object : SimpleMultiPurposeListener() {
@@ -194,6 +194,16 @@ class MainActivity : AppCompatActivity() {
             } else {
                 targetTranslationY
             }
+
+            // 3. 搜索框大小调整
+            val maxMarginRight = Utils.dp2px(this, 92f)
+            var progress = (1 - alpha) * 2f
+            if (progress > 1) {
+                progress = 1.0f
+            }
+            val layoutParams = main_search_layout.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.setMargins(0, 0, (maxMarginRight * progress).toInt(),0)
+            main_search_layout.layoutParams = layoutParams
         })
     }
 
