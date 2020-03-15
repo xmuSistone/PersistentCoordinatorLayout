@@ -34,13 +34,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // 0. 下拉刷新Handler
-        uiHandler = object : Handler() {
-            override fun handleMessage(msg: Message?) {
-                main_refresh_layout.finishRefresh()
-            }
-        }
-
         // 1. 调整状态栏
         Utils.immerseStatusBar(this)
 
@@ -66,6 +59,16 @@ class MainActivity : AppCompatActivity() {
         home_menu_viewpager2.offscreenPageLimit = 2
         home_menu_viewpager2.adapter = MenuViewPagerAdapter(this)
         home_menu_indicator.setViewPager2(home_menu_viewpager2, 2)
+
+        // 6. 下拉刷新Handler
+        uiHandler = object : Handler() {
+            override fun handleMessage(msg: Message?) {
+                main_refresh_layout.finishRefresh()
+            }
+        }
+        main_refresh_layout.setOnRefreshListener {
+            uiHandler!!.sendEmptyMessageDelayed(0, 800)
+        }
     }
 
     /**
