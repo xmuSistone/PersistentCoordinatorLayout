@@ -1,17 +1,13 @@
 package com.stone.persistent.library
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.WindowManager
-import android.view.animation.Interpolator
-import android.widget.OverScroller
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout
 
 /**
@@ -23,9 +19,11 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
 ) : CoordinatorLayout(context, attrs, defStyleAttr) {
 
     private lateinit var appBarLayout: AppBarLayout
-    private var overScroller: HookedScroller? = null
 
-    private var persistentProvider: PersistentProvider? = null
+    private var innerViewPager: ViewPager? = null
+    private var innerViewPager2: ViewPager2? = null
+
+    private var overScroller: HookedScroller? = null
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -52,7 +50,15 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
             AppBarLayout.Behavior::class.java.superclass.superclass.getDeclaredField("scroller")
         scrollerField.isAccessible = true
         if (scrollerField.get(behavior) == null) {
-            overScroller = HookedScroller(context)
+            // 1. 初始化HookedScroller
+            val persistentProvider = object : PersistentProvider {
+                override fun getCurrentRecyclerView(): RecyclerView? {
+                    return findCurrentChildRecyclerView()
+                }
+            }
+            overScroller = HookedScroller(context, persistentProvider)
+
+            // 2. 注入Scroller
             scrollerField.set(behavior, overScroller)
         }
     }
@@ -66,10 +72,8 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
             overScroller?.forceFinished(true)
 
             // 底部的RecyclerView滑动停止
-            if (ev.y < appBarLayout.bottom && persistentProvider != null) {
-                val currentViewPager = persistentProvider!!.getViewPager()
-                val currentItem = currentViewPager.currentItem
-                val currentRecyclerView = persistentProvider?.getRecyclerView(currentItem)
+            if (ev.y < appBarLayout.bottom) {
+                val currentRecyclerView = findCurrentChildRecyclerView()
                 currentRecyclerView?.stopScroll()
             }
         }
@@ -80,128 +84,57 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
     /**
      * 判断是否已经悬停在顶部
      */
-    private fun isStickingTop(): Boolean {
+    fun isStickingTop(): Boolean {
         return appBarLayout.totalScrollRange + appBarLayout.top === 0
     }
 
-    fun setPersistentProvider(persistentProvider: PersistentProvider) {
-        this.persistentProvider = persistentProvider
+    /**
+     * 获取当前的ChildRecyclerView
+     */
+    private fun findCurrentChildRecyclerView(): ChildRecyclerView? {
+        if (innerViewPager != null) {
+            val currentItem = innerViewPager!!.currentItem
+            for (i in 0 until innerViewPager!!.childCount) {
+                val itemChildView = innerViewPager!!.getChildAt(i)
+                val layoutParams = itemChildView.layoutParams as ViewPager.LayoutParams
+                val positionField = layoutParams.javaClass.getDeclaredField("position")
+                positionField.isAccessible = true
+                val position = positionField.get(layoutParams) as Int
 
-        val viewPager = this.persistentProvider!!.getViewPager()
-        viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageScrollStateChanged(state: Int) {
-                if (state == ViewPager.SCROLL_STATE_DRAGGING && !isStickingTop()) {
-                    val len = viewPager.adapter?.count
-                    for (i in 0 until len!!) {
-                        if (i != viewPager.currentItem) {
-                            val recyclerView = persistentProvider.getRecyclerView(i)
-                            recyclerView?.scrollToPosition(0)
+                if (!layoutParams.isDecor && currentItem == position) {
+                    if (itemChildView is ChildRecyclerView) {
+                        return itemChildView
+                    } else {
+                        val tagView = itemChildView?.getTag(R.id.tag_saved_child_recycler_view)
+                        if (tagView is ChildRecyclerView) {
+                            return tagView
                         }
                     }
                 }
             }
-        })
-    }
+        } else if (innerViewPager2 != null) {
+            val layoutManagerFiled = ViewPager2::class.java.getDeclaredField("mLayoutManager")
+            layoutManagerFiled.isAccessible = true
+            val pagerLayoutManager = layoutManagerFiled.get(innerViewPager2) as LinearLayoutManager
+            var currentChild = pagerLayoutManager.findViewByPosition(innerViewPager2!!.currentItem)
 
-    inner class HookedScroller : OverScroller {
-
-        private val refreshInterval: Int
-        private var scrollerYObj: Any
-        private val uiHandler: Handler
-
-        /**
-         * 构造函数
-         */
-        @JvmOverloads
-        constructor(context: Context, interpolator: Interpolator? = null) : super(
-            context,
-            interpolator
-        )
-
-        init {
-            // 获取系统刷新频率
-            val refreshRate = getRefreshRate()
-            refreshInterval = (1000 / refreshRate).toInt()
-
-            val scrollerYField = OverScroller::class.java.getDeclaredField("mScrollerY")
-            scrollerYField.isAccessible = true
-            scrollerYObj = scrollerYField.get(this)
-
-            uiHandler = object : Handler(Looper.getMainLooper()) {
-                override fun handleMessage(msg: Message) {
-                    syncFling()
+            if (currentChild is ChildRecyclerView) {
+                return currentChild
+            } else {
+                val tagView = currentChild?.getTag(R.id.tag_saved_child_recycler_view)
+                if (tagView is ChildRecyclerView) {
+                    return tagView
                 }
             }
         }
-
-        /**
-         * fling传导
-         */
-        private fun syncFling() {
-            val velocityY = this.getVelocityY()
-            if (velocityY < -200 && persistentProvider != null) {
-                val currentItem = persistentProvider!!.getViewPager().currentItem
-                val currentScrollableView = persistentProvider!!.getRecyclerView(currentItem)
-                if (currentScrollableView is RecyclerView) {
-                    currentScrollableView.fling(0, -velocityY)
-                }
-            }
-        }
-
-        /**
-         * 监听OverScroller.fling()，为后续的syncFling埋下种子
-         */
-        override fun fling(
-            startX: Int,
-            startY: Int,
-            velocityX: Int,
-            velocityY: Int,
-            minX: Int,
-            maxX: Int,
-            minY: Int,
-            maxY: Int,
-            overX: Int,
-            overY: Int
-        ) {
-            super.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY, overX, overY)
-
-            if (velocityY < -200) {
-                // 获取fling动画时长
-                val durationField = scrollerYObj.javaClass.getDeclaredField("mDuration")
-                durationField.isAccessible = true
-                val duration = durationField.get(scrollerYObj) as Int
-
-                // 在fling动画结束的前一帧，用handler启动fling传导
-                val flingInterval = duration - refreshInterval
-                uiHandler.sendEmptyMessageDelayed(1, flingInterval.toLong())
-            }
-        }
-
-        /**
-         * 清空uiHandler中scroller动画Message
-         */
-        fun clearPendingMessages() {
-            uiHandler.removeCallbacksAndMessages(null)
-        }
-
-
-        /**
-         * 获取Y方向Scroller速率
-         */
-        private fun getVelocityY(): Int {
-            val mCurrVelocityField = scrollerYObj.javaClass.getDeclaredField("mCurrVelocity")
-            mCurrVelocityField.isAccessible = true
-            val mCurrVelocity = mCurrVelocityField.get(scrollerYObj) as Float
-            return mCurrVelocity.toInt()
-        }
-
-        /**
-         * 获取刷新频率
-         */
-        private fun getRefreshRate(): Float {
-            var windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            return windowManager.defaultDisplay.refreshRate
-        }
+        return null
     }
 
+    fun setInnerViewPager(viewPager: ViewPager?) {
+        this.innerViewPager = viewPager
+    }
+
+    fun setInnerViewPager2(viewPager2: ViewPager2?) {
+        this.innerViewPager2 = viewPager2
+    }
 }

@@ -6,12 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.stone.persistent.R
-import com.stone.persistent.adapter.ProductListAdapter
+import com.stone.persistent.adapter.FeedsListAdapter
 import com.stone.persistent.util.Utils
 import com.stone.persistent.widget.GridItemDecoration
-import kotlinx.android.synthetic.main.fragment_product_list.*
+import kotlinx.android.synthetic.main.fragment_feeds_list.*
 
-class ProductListFragment : Fragment(R.layout.fragment_product_list) {
+class FeedsListFragment : Fragment(R.layout.fragment_feeds_list) {
 
     private var recyclerView: RecyclerView? = null
 
@@ -22,7 +22,7 @@ class ProductListFragment : Fragment(R.layout.fragment_product_list) {
         val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         this.recyclerView!!.layoutManager = layoutManager
         this.recyclerView!!.addItemDecoration(GridItemDecoration(Utils.dp2px(activity!!, 8f)))
-        this.recyclerView!!.adapter = ProductListAdapter(activity!!)
+        this.recyclerView!!.adapter = FeedsListAdapter(activity!!)
     }
 
     fun getRecyclerView(): RecyclerView? {

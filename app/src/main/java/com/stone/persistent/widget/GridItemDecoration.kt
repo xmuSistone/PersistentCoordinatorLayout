@@ -18,6 +18,7 @@ class GridItemDecoration(divider: Float) : RecyclerView.ItemDecoration() {
     ) {
         val layoutParams = view.layoutParams as StaggeredGridLayoutManager.LayoutParams
         val spanIndex = layoutParams.spanIndex
+
         if (spanIndex == 0) {
             outRect.left = divider
             outRect.right = divider / 2
@@ -26,6 +27,10 @@ class GridItemDecoration(divider: Float) : RecyclerView.ItemDecoration() {
             outRect.left = divider / 2
         }
 
-
+        outRect.top = if (layoutParams.viewAdapterPosition < 2) {
+            divider / 2
+        } else {
+            0
+        }
     }
 }

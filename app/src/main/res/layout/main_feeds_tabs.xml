@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="#fff"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/main_feeds_tab1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"
+        android:text="精选"
+        android:textColor="#f00"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="13dp"
+        android:background="#f0f0f0" />
+
+    <TextView
+        android:id="@+id/main_feeds_tab2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"
+        android:text="年货节"
+        android:textColor="#333"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="13dp"
+        android:background="#f0f0f0" />
+
+    <TextView
+        android:id="@+id/main_feeds_tab3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"
+        android:text="直播"
+        android:textColor="#333"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="13dp"
+        android:background="#f0f0f0" />
+
+    <TextView
+        android:id="@+id/main_feeds_tab4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"
+        android:text="进口"
+        android:textColor="#333"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="13dp"
+        android:background="#f0f0f0" />
+
+    <TextView
+        android:id="@+id/main_feeds_tab5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"
+        android:text="实惠"
+        android:textColor="#333"
+        android:textSize="15sp" />
+
+</LinearLayout>

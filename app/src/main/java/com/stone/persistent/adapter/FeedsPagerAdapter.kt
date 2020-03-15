@@ -3,17 +3,19 @@ package com.stone.persistent.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.stone.persistent.fragment.ProductListFragment
+import com.stone.persistent.fragment.FeedsListFragment
 
-class ProductViewPagerAdapter(fm: FragmentManager) :
+class FeedsPagerAdapter(fm: FragmentManager) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val fragmentList = ArrayList<Fragment>()
 
     init {
-        fragmentList.add(ProductListFragment())
-        fragmentList.add(ProductListFragment())
-        fragmentList.add(ProductListFragment())
+        fragmentList.add(FeedsListFragment())
+        fragmentList.add(FeedsListFragment())
+        fragmentList.add(FeedsListFragment())
+        fragmentList.add(FeedsListFragment())
+        fragmentList.add(FeedsListFragment())
     }
 
     override fun getCount(): Int {

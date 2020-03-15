@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.stone.persistent.R
 import com.stone.persistent.model.ProductItemModel
-import kotlinx.android.synthetic.main.list_item.view.*
+import kotlinx.android.synthetic.main.item_feeds_product.view.*
 
-class ProductListAdapter(context: Context) : Adapter<ProductListAdapter.ProductViewHolder>() {
+class FeedsListAdapter(context: Context) : Adapter<FeedsListAdapter.ProductViewHolder>() {
 
     private var inflater = LayoutInflater.from(context)
     private val dataList = ArrayList<ProductItemModel>()
@@ -65,7 +65,7 @@ class ProductListAdapter(context: Context) : Adapter<ProductListAdapter.ProductV
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val itemView = inflater.inflate(R.layout.list_item, parent, false)
+        val itemView = inflater.inflate(R.layout.item_feeds_product, parent, false)
         return ProductViewHolder(itemView)
     }
 
