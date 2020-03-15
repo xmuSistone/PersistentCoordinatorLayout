@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 /**
  * 内层的RecyclerView
  */
-class ChildRecyclerView @JvmOverloads constructor(
+class PersistentRecyclerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
@@ -35,14 +35,14 @@ class ChildRecyclerView @JvmOverloads constructor(
             val parentClassName = parentView::class.java.canonicalName
             if ("androidx.viewpager2.widget.ViewPager2.RecyclerViewImpl" == parentClassName) {
                 // 使用ViewPager2，parentView的顺序如下:
-                // ChildRecyclerView -> 若干View -> FrameLayout -> RecyclerViewImpl -> ViewPager2 -> 若干View -> ParentRecyclerView
+                // PersistentRecyclerView -> 若干View -> FrameLayout -> RecyclerViewImpl -> ViewPager2 -> 若干View -> ParentRecyclerView
 
                 // 此时lastTraverseView是上方注释中的FrameLayout，算是"ViewPager2.child"，我们此处将ChildRecyclerView设置到FrameLayout的tag中
                 // 这个tag会在ParentRecyclerView中用到
                 lastTraverseView.setTag(R.id.tag_saved_child_recycler_view, this)
             } else if (parentView is ViewPager) {
                 // 使用ViewPager，parentView顺序如下：
-                // ChildRecyclerView -> 若干View -> ViewPager -> 若干View -> ParentRecyclerView
+                // PersistentRecyclerView -> 若干View -> ViewPager -> 若干View -> ParentRecyclerView
                 // 此处将ChildRecyclerView保存到ViewPager最直接的子View中
                 if (lastTraverseView != this) {
                     // 这个tag会在ParentRecyclerView中用到

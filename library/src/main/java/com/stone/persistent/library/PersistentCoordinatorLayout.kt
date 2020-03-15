@@ -91,7 +91,7 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
     /**
      * 获取当前的ChildRecyclerView
      */
-    private fun findCurrentChildRecyclerView(): ChildRecyclerView? {
+    private fun findCurrentChildRecyclerView(): PersistentRecyclerView? {
         if (innerViewPager != null) {
             val currentItem = innerViewPager!!.currentItem
             for (i in 0 until innerViewPager!!.childCount) {
@@ -102,11 +102,11 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
                 val position = positionField.get(layoutParams) as Int
 
                 if (!layoutParams.isDecor && currentItem == position) {
-                    if (itemChildView is ChildRecyclerView) {
+                    if (itemChildView is PersistentRecyclerView) {
                         return itemChildView
                     } else {
                         val tagView = itemChildView?.getTag(R.id.tag_saved_child_recycler_view)
-                        if (tagView is ChildRecyclerView) {
+                        if (tagView is PersistentRecyclerView) {
                             return tagView
                         }
                     }
@@ -118,11 +118,11 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
             val pagerLayoutManager = layoutManagerFiled.get(innerViewPager2) as LinearLayoutManager
             var currentChild = pagerLayoutManager.findViewByPosition(innerViewPager2!!.currentItem)
 
-            if (currentChild is ChildRecyclerView) {
+            if (currentChild is PersistentRecyclerView) {
                 return currentChild
             } else {
                 val tagView = currentChild?.getTag(R.id.tag_saved_child_recycler_view)
-                if (tagView is ChildRecyclerView) {
+                if (tagView is PersistentRecyclerView) {
                     return tagView
                 }
             }
