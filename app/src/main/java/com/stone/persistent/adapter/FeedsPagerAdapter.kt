@@ -1,14 +1,14 @@
 package com.stone.persistent.adapter
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.stone.persistent.fragment.FeedsListFragment
 
-class FeedsPagerAdapter(fm: FragmentManager) :
-    FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class FeedsPagerAdapter(fragmentActivity: FragmentActivity) :
+    FragmentStateAdapter(fragmentActivity) {
 
-    private val fragmentList = ArrayList<Fragment>()
+    private val fragmentList = ArrayList<FeedsListFragment>()
 
     init {
         fragmentList.add(FeedsListFragment())
@@ -18,11 +18,11 @@ class FeedsPagerAdapter(fm: FragmentManager) :
         fragmentList.add(FeedsListFragment())
     }
 
-    override fun getCount(): Int {
-        return fragmentList.size
+    override fun createFragment(position: Int): Fragment {
+        return fragmentList[position]
     }
 
-    override fun getItem(position: Int): Fragment {
-        return fragmentList.get(position)
+    override fun getItemCount(): Int {
+        return fragmentList.size
     }
 }
