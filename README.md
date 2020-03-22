@@ -1,5 +1,5 @@
 # PersistentCoordinatorLayout
-仿京东首页，整体是个长列表(PersistentCoordinator)，底部的商品列表部分(PersistentRecyclerView)可以左右滑动。
+仿京东App首页的CoordinatorLayout方案，思路：长列表整体是PersistentCoordinator，底部的商品列表部分(PersistentRecyclerView)可以左右滑动。
 
 ## 实现效果
 点击可查看截屏视频：
