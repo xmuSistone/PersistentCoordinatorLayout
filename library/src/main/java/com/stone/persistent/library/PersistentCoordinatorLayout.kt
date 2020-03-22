@@ -27,7 +27,7 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        if (childCount === 2 && getChildAt(0) is AppBarLayout) {
+        if (childCount == 2 && getChildAt(0) is AppBarLayout) {
             this.appBarLayout = getChildAt(0) as AppBarLayout
             this.appBarLayout.viewTreeObserver.addOnGlobalLayoutListener {
                 if (overScroller == null) {
@@ -78,14 +78,6 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
             }
         }
         return super.dispatchTouchEvent(ev)
-    }
-
-
-    /**
-     * 判断是否已经悬停在顶部
-     */
-    fun isStickingTop(): Boolean {
-        return appBarLayout.totalScrollRange + appBarLayout.top === 0
     }
 
     /**
