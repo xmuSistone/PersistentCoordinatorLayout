@@ -80,7 +80,7 @@ class FeedsListAdapter(context: Context) : Adapter<FeedsListAdapter.ProductViewH
     }
 
     override fun getItemCount(): Int {
-        return 80
+        return 60
     }
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
