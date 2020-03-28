@@ -2,9 +2,11 @@
 仿京东App首页的CoordinatorLayout方案，思路：长列表整体是PersistentCoordinator，底部的商品列表部分(PersistentRecyclerView)可以左右滑动。
 
 ## 实现效果
-点击可查看截屏视频：
+点击可查看[截屏视频](http://sistone.top/capture/video.html?content=PersistentCoordinatorLayout)：
 
-<img src="capturedImage.jpg" width="460"/>
+<a href="http://sistone.top/capture/video.html?content=PersistentCoordinatorLayout">
+    <img src="capturedImage.jpg" width="460"/>
+</a>
 
 ## 使用方法
 CoordinatorLayout和RecyclerView的使用方法跟官方一样，只是需要注意这2点：
