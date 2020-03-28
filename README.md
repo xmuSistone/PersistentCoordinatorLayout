@@ -28,4 +28,4 @@ AppBarLayout上拉时，Fling速率传递给下方的RecyclerView。
 京东App首页的长列表，整体是通过RecyclerView实现的，我也实现了一份，感兴趣的同学可以去瞅瞅：[传送门](https://github.com/xmuSistone/PersistentRecyclerView)
 
 ## Demo下载
-[点击下载](https://github.com/xmuSistone/PersistentCoordinatorLayout/blob/master/app-release.apk?raw=true)
+[点击下载](https://github.com/xmuSistone/PersistentCoordinatorLayout/blob/master/PersistentCoordinatorLayout.apk?raw=true)
