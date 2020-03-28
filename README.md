@@ -5,7 +5,7 @@
 点击可查看[截屏视频](http://sistone.top/capture/video.html?content=PersistentCoordinatorLayout)：
 
 <a href="http://sistone.top/capture/video.html?content=PersistentCoordinatorLayout">
-    <img src="capturedImage.jpg" width="460"/>
+    <img src="https://stone225.oss-cn-hangzhou.aliyuncs.com/jingdong.jpg" width="460"/>
 </a>
 
 ## 使用方法
@@ -25,7 +25,7 @@ AppBarLayout快速向上拖动时，Fling速率能够传递给下方的RecyclerV
 当然细节代码较多，此处不再赘述，感兴趣的同学可自行Review代码即知。
 
 ## 另一种方案
-京东App首页的长列表，整体是通过RecyclerView实现的，我也实现了一份，感兴趣的同学可以去瞅瞅：[传送门](https://github.com/xmuSistone/PersistentCoordinatorLayout)
+京东App首页的长列表，整体是通过RecyclerView实现的，我也实现了一份，感兴趣的同学可以去瞅瞅：[传送门](https://github.com/xmuSistone/PersistentRecyclerView)
 
 ## Demo下载
 [点击下载](https://github.com/xmuSistone/PersistentRecyclerView/blob/master/app-release.apk?raw=true)
