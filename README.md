@@ -9,18 +9,18 @@
 </a>
 
 ## 使用方法
-CoordinatorLayout和RecyclerView的使用方法跟官方一样，只是需要注意这2点：
+CoordinatorLayout和RecyclerView的使用方法跟官方一样，使用起来注意这2点：
 1. 外部的长列表容器使用PersistentCoordinator；
 2. 内嵌的子列表使用PersistentRecyclerView；
 
 仅此两点，别无其他，ViewPager和ViewPager2均已内部兼容，可任意选用；
 
 ## 实现方案
-熟悉CoordinatorLayout的同学会知道，官方控件只需要改进一点，就能让它“更像是一个长列表”，即：
+CoordinatorLayout已经实现了NestedScrollingParent3接口，底部列表上滑时，会自动将Fling速率传递给AppBarLayout。而AppBarLayout下滑时，却无法将Fling速率传递给底部的列表View。所以，CoordinatorLayout只需要改进一点，就能让它“更像是一个长列表”，即：
 
-AppBarLayout快速向上拖动时，Fling速率能够传递给下方的RecyclerView。
+AppBarLayout快速向上拖动时，Fling速率传递给下方的RecyclerView。
 
-要实现这一点并不复杂，AppBarLayout的fling是通过behavior实现的，behavior内部也会维持一个OverScroller对象，我们只需要在特定的时间点，将OverScroller内部的velocityY传递给RecyclerView，就能实现我们期待的长列表效果。
+要实现这一点并不复杂，AppBarLayout的fling是通过behavior实现的，behavior内部也会维持一个OverScroller对象，我们只需要在特定的时间节点，将OverScroller内部的velocityY传递给RecyclerView，就能实现内嵌ViewPager的长列表效果。
 
 当然细节代码较多，此处不再赘述，感兴趣的同学可自行Review代码即知。
 
