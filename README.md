@@ -1,5 +1,6 @@
 # PersistentCoordinatorLayout
-仿京东App首页的CoordinatorLayout方案，长列表整体是PersistentCoordinatorLayout，底部的商品列表部分是PersistentRecyclerView。
+
+仿京东首页，整体是个长列表(PersistentCoordinatorLayout)，内嵌子列表 - 商品feeds流(PersistentRecyclerView)，且商品流可以左右滑动(ViewPager/ViewPager2)。
 
 ## 实现效果
 点击可查看[截屏视频](http://sistone.top/capture/video.html?content=PersistentCoordinatorLayout)：
@@ -9,18 +10,15 @@
 </a>
 
 ## 使用方法
-CoordinatorLayout和RecyclerView的使用方法跟官方一样：
-1. 外部的长列表容器使用PersistentCoordinator；
+1. 外部的长列表容器使用PersistentCoordinatorLayout；
 2. 内嵌的子列表使用PersistentRecyclerView；
 
-仅此两点，别无其他，ViewPager和ViewPager2均已内部兼容，可任意选用；
+CoordinatorLayout和RecyclerView的使用方法跟官方一样，ViewPager和ViewPager2可随意选用，均已内部兼容；
 
 ## 实现方案
-CoordinatorLayout已经实现了NestedScrollingParent3接口，当底部列表上拉或下拉时，会自动将Fling的速率传递给AppBarLayout。而AppBarLayout上拉c触底时，却无法将Fling速率传递给底部的RecyclerView。所以，CoordinatorLayout只需要改进一点，就能让它“更像是一个长列表”，即：
+CoordinatorLayout已经实现了NestedScrollingParent3接口，当底部列表上拉或下拉时，会自动将Fling的速率传递给AppBarLayout。而AppBarLayout上拉c触底时，却无法将Fling速率传递给底部的RecyclerView。所以，我们只要能改造好这一点，就能让CoordinatorLayout“<b>更像是一个长列表</b>”。<br/><br/>
 
-AppBarLayout上拉触底时，Fling的速率传递给下方的RecyclerView。
-
-要实现这一点并不复杂，AppBarLayout的fling是通过behavior实现的，behavior内部会维护一个OverScroller对象，我们只需要在特定的时间节点，将OverScroller内部的velocityY传递给底部的RecyclerView即可。
+要实现这一点并不复杂，AppBarLayout的fling是通过behavior实现的，behavior内部会维护一个OverScroller对象，OverScroller，将OverScroller内部的velocityY传递给底部的RecyclerView即可。
 
 当然细节代码较多，此处不再赘述，感兴趣的同学可自行Review代码即知。
 
