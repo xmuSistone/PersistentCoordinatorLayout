@@ -9,7 +9,6 @@ import com.stone.persistent.adapter.FeedsPagerAdapter
 import com.stone.persistent.adapter.MenuViewPagerAdapter
 import com.stone.persistent.helper.HomeFeedsIndicator
 import com.stone.persistent.helper.SyncScrollHelper
-import com.stone.persistent.util.CarouselHelper
 import com.stone.persistent.util.Utils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_top_content.*
@@ -38,11 +37,10 @@ class MainActivity : AppCompatActivity() {
         feedsIndicator.setViewPager(main_feeds_viewpager)
 
         // 4. 轮播图，ViewPager绑定Adapter
-        home_carousel_viewpager2.adapter = CarouselAdapter(this)
-        home_carousel_viewpager2.currentItem = 2000
-        home_carousel_indicator.setViewPager2(home_carousel_viewpager2, 5)
-        var carouselHelper = CarouselHelper(home_carousel_viewpager2)
-        carouselHelper.start()
+        val carouselViewPager = home_carousel_view.getViewPager2()
+        carouselViewPager.adapter = CarouselAdapter(this)
+        carouselViewPager.currentItem = 2000
+        home_carousel_indicator.setViewPager2(carouselViewPager, 5)
 
         // 5. 菜单按钮，ViewPager左右滑动
         home_menu_viewpager2.offscreenPageLimit = 2

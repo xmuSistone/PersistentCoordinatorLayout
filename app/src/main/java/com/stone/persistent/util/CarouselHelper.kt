@@ -2,53 +2,32 @@ package com.stone.persistent.util
 
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.view.DragEvent
-import android.view.View
+import android.os.Message
 import androidx.viewpager2.widget.ViewPager2
 
-class CarouselHelper(viewPager2: ViewPager2) {
+class CarouselHelper(viewPager2: ViewPager2) : Handler(Looper.getMainLooper()) {
 
-    private var carouselThread: Thread? = null
-    private var handler: Handler
+    private val viewPager2 = viewPager2
 
-    init {
-        handler = Handler(Looper.getMainLooper()) {
-            viewPager2.currentItem = viewPager2.currentItem + 1
-            true;
-        }
+    companion object {
+        private const val LOOP_INTERVAL = 3000L
+    }
 
-        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
+    override fun handleMessage(msg: Message?) {
+        // 1. 切换到下一个item
+        val nextItem = viewPager2.currentItem + 1
+        viewPager2.currentItem = nextItem
 
-        })
-
-        viewPager2.setOnDragListener(object: View.OnDragListener {
-            override fun onDrag(v: View?, event: DragEvent?): Boolean {
-                Log.e("LeiTest", "setOnDragListener ")
-                return true
-            }
-        })
+        // 2. 开启下一次的轮播
+        this.sendEmptyMessageDelayed(1, LOOP_INTERVAL)
     }
 
     fun start() {
-        carouselThread?.interrupt()
-
-        carouselThread = Thread {
-            try {
-                while (true) {
-                    Thread.sleep(3000)
-                    handler.sendEmptyMessage(1)
-                }
-            } catch (e: Throwable) {
-
-            }
-        }
-        carouselThread!!.start()
+        this.removeCallbacksAndMessages(null)
+        this.sendEmptyMessageDelayed(1, LOOP_INTERVAL)
     }
 
     fun stop() {
-        carouselThread?.interrupt()
+        this.removeCallbacksAndMessages(null)
     }
 }
