@@ -16,7 +16,7 @@
 CoordinatorLayout和RecyclerView的使用方法跟官方一样，ViewPager和ViewPager2可随意选用，均已内部兼容；
 
 ## 实现方案
-CoordinatorLayout已经实现了NestedScrollingParent3接口，当底部列表上拉或下拉时，会自动将Fling的速率传递给AppBarLayout。而AppBarLayout上拉触底时，却无法将Fling速率传递给底部的RecyclerView。所以，我们只要能改造好这一点，就能让CoordinatorLayout“<b>更像是一个长列表</b>”。<br/><br/>
+CoordinatorLayout已经实现了NestedScrollingParent3接口，当底部商品流列表上拉或下拉时，会自动将Fling的速率传递给AppBarLayout。而AppBarLayout上拉触底时，却无法将Fling速率传递给底部的商品流RecyclerView。所以，我们只要能改造好这一点，就能让CoordinatorLayout“<b>更像是一个长列表</b>”。<br/><br/>
 要实现这一点并不复杂，AppBarLayout的fling是通过behavior实现的，behavior内部会维护一个OverScroller对象，OverScroller保存了我们想要的一切，包括Fling速率。<br/><br/>
 当然细节代码较多，此处不再赘述，感兴趣的同学可自行Review代码即知。
 
