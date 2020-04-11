@@ -6,9 +6,9 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import com.stone.persistent.MainActivity
-import com.stone.persistent.recyclerview.extensions.dp2px
-import com.stone.persistent.recyclerview.extensions.getScreenWidth
-import com.stone.persistent.recyclerview.extensions.getStatusBarHeight
+import com.stone.persistent.extensions.dp2px
+import com.stone.persistent.extensions.getScreenWidth
+import com.stone.persistent.extensions.getStatusBarHeight
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**

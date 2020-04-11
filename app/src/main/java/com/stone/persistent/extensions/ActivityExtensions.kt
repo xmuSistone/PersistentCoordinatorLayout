@@ -1,4 +1,4 @@
-package com.stone.persistent.recyclerview.extensions
+package com.stone.persistent.extensions
 
 import android.graphics.Color
 import android.os.Build

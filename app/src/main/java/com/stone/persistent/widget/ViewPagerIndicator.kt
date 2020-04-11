@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.stone.persistent.R
-import com.stone.persistent.recyclerview.extensions.dp2px
+import com.stone.persistent.extensions.dp2px
 
 
 /**

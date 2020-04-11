@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.stone.persistent.R
 import com.stone.persistent.adapter.FeedsListAdapter
-import com.stone.persistent.recyclerview.extensions.dp2px
+import com.stone.persistent.extensions.dp2px
 import com.stone.persistent.widget.GridItemDecoration
 import com.stone.persistent.widget.PersistentStaggeredGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_feeds_list.*

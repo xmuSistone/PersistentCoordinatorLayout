@@ -8,7 +8,7 @@ import com.stone.persistent.adapter.FeedsPagerAdapter
 import com.stone.persistent.adapter.MenuViewPagerAdapter
 import com.stone.persistent.helper.HomeIndicatorHelper
 import com.stone.persistent.helper.SyncScrollHelper
-import com.stone.persistent.recyclerview.extensions.immerseStatusBar
+import com.stone.persistent.extensions.immerseStatusBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_top_content.*
 
