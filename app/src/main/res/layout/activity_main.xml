@@ -136,7 +136,7 @@
 
     <!-- 4. 搜索框-->
 
-    <com.stone.persistent.widget.HomeSearchBar
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_search_layout"
         android:layout_width="match_parent"
         android:layout_height="32dp"
@@ -186,6 +186,6 @@
             app:layout_constraintRight_toRightOf="@+id/main_search_back"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </com.stone.persistent.widget.HomeSearchBar>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

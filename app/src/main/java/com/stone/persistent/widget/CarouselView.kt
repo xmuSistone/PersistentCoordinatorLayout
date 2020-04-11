@@ -6,7 +6,7 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.viewpager2.widget.ViewPager2
-import com.stone.persistent.util.CarouselHelper
+import com.stone.persistent.helper.CarouselHelper
 
 class CarouselView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

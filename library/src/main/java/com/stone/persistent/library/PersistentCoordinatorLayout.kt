@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout
@@ -51,18 +50,14 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
         scrollerField.isAccessible = true
         if (scrollerField.get(behavior) == null) {
             // 1. 初始化HookedScroller
-            val persistentProvider = object : PersistentProvider {
-                override fun getCurrentRecyclerView(): RecyclerView? {
-                    return findCurrentChildRecyclerView()
-                }
+            overScroller = HookedScroller(context) {
+                findCurrentChildRecyclerView()
             }
-            overScroller = HookedScroller(context, persistentProvider)
 
             // 2. 注入Scroller
             scrollerField.set(behavior, overScroller)
         }
     }
-
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         // 手指按下时，所有scroll动画都需要停止

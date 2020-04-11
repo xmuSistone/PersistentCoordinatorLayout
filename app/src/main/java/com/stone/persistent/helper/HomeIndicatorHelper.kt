@@ -8,7 +8,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.stone.persistent.MainActivity
 import kotlinx.android.synthetic.main.main_feeds_tabs.*
 
-class HomeFeedsIndicator(mainActivity: MainActivity) {
+class HomeIndicatorHelper(mainActivity: MainActivity) {
 
     private val tabList = ArrayList<TextView>()
     private var viewPager2: ViewPager2? = null

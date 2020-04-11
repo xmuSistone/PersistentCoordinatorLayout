@@ -1,4 +1,4 @@
-package com.stone.persistent.util
+package com.stone.persistent.helper
 
 import android.os.Handler
 import android.os.Looper
@@ -19,12 +19,16 @@ class CarouselHelper(viewPager2: ViewPager2) : Handler(Looper.getMainLooper()) {
         viewPager2.currentItem = nextItem
 
         // 2. 开启下一次的轮播
-        this.sendEmptyMessageDelayed(1, LOOP_INTERVAL)
+        this.sendEmptyMessageDelayed(1,
+            LOOP_INTERVAL
+        )
     }
 
     fun start() {
         this.removeCallbacksAndMessages(null)
-        this.sendEmptyMessageDelayed(1, LOOP_INTERVAL)
+        this.sendEmptyMessageDelayed(1,
+            LOOP_INTERVAL
+        )
     }
 
     fun stop() {

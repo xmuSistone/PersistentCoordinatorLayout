@@ -3,7 +3,7 @@ package com.stone.persistent.widget
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-class PersistentStaggeredGridLayoutManager() :
+class PersistentStaggeredGridLayoutManager :
     StaggeredGridLayoutManager(2, VERTICAL) {
 
     /**

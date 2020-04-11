@@ -6,7 +6,9 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import com.stone.persistent.MainActivity
-import com.stone.persistent.util.Utils
+import com.stone.persistent.recyclerview.extensions.dp2px
+import com.stone.persistent.recyclerview.extensions.getScreenWidth
+import com.stone.persistent.recyclerview.extensions.getStatusBarHeight
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -14,10 +16,10 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 class SyncScrollHelper(mainActivity: MainActivity) {
 
-    private val statusBarHeight = Utils.getStatusBarHeight(mainActivity)
-    private val toolbarHeight = Utils.dp2px(mainActivity, 50f)
-    private var screenWidth = Utils.getScreenWidth(mainActivity)
-    private var searchBarHeight = Utils.dp2px(mainActivity, 46f)
+    private val statusBarHeight = mainActivity.getStatusBarHeight()
+    private val toolbarHeight = mainActivity.dp2px(50f)
+    private var screenWidth = mainActivity.getScreenWidth()
+    private var searchBarHeight = mainActivity.dp2px(46f)
 
     private val activity = mainActivity
     private val toolBarLayout = mainActivity.main_toolbar
@@ -52,7 +54,7 @@ class SyncScrollHelper(mainActivity: MainActivity) {
      */
     fun syncListScroll(appBarLayout: AppBarLayout) {
         appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, offset ->
-            val minTranslationY = statusBarHeight + Utils.dp2px(activity, 9f)
+            val minTranslationY = statusBarHeight + activity.dp2px(9f)
             val maxTranslationY = statusBarHeight + toolbarHeight
             val targetTranslationY = maxTranslationY + offset / 2
 
@@ -71,7 +73,7 @@ class SyncScrollHelper(mainActivity: MainActivity) {
             }
 
             // 3. 搜索框大小调整
-            val maxMarginRight = Utils.dp2px(activity, 92f)
+            val maxMarginRight = activity.dp2px(92f)
             var progress = (1 - alpha) * 2f
             if (progress > 1) {
                 progress = 1.0f

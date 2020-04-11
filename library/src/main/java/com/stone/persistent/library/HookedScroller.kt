@@ -10,7 +10,7 @@ import android.widget.OverScroller
 /**
  * 这是注入到Behavior的scroller
  */
-class HookedScroller(context: Context, persistentProvider: PersistentProvider) :
+class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyclerView?) :
     OverScroller(context) {
 
     private val persistentProvider = persistentProvider
@@ -52,7 +52,7 @@ class HookedScroller(context: Context, persistentProvider: PersistentProvider) :
     private fun syncFling() {
         val velocityY = this.getVelocityY()
         if (velocityY < -200) {
-            val childRecyclerView = persistentProvider.getCurrentRecyclerView()
+            val childRecyclerView = persistentProvider.invoke()
             childRecyclerView?.fling(0, -velocityY)
         }
     }

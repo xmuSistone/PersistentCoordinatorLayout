@@ -2,14 +2,13 @@ package com.stone.persistent
 
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 import androidx.appcompat.app.AppCompatActivity
 import com.stone.persistent.adapter.CarouselAdapter
 import com.stone.persistent.adapter.FeedsPagerAdapter
 import com.stone.persistent.adapter.MenuViewPagerAdapter
-import com.stone.persistent.helper.HomeFeedsIndicator
+import com.stone.persistent.helper.HomeIndicatorHelper
 import com.stone.persistent.helper.SyncScrollHelper
-import com.stone.persistent.util.Utils
+import com.stone.persistent.recyclerview.extensions.immerseStatusBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_top_content.*
 
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // 1. 调整状态栏
-        Utils.immerseStatusBar(this)
+        immerseStatusBar()
 
         // 2. 列表滑动及下拉刷新，View状态同步
         val syncScrollHelper = SyncScrollHelper(this)
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         // 3. 商品流，ViewPager绑定Adapter
         val feedsPagerAdapter = FeedsPagerAdapter(this)
         main_feeds_viewpager.adapter = feedsPagerAdapter
-        val feedsIndicator = HomeFeedsIndicator(this)
+        val feedsIndicator = HomeIndicatorHelper(this)
         feedsIndicator.setViewPager(main_feeds_viewpager)
 
         // 4. 轮播图，ViewPager绑定Adapter
@@ -52,10 +51,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun processPullRefresh() {
-        pullRefreshHandler = object : Handler() {
-            override fun handleMessage(msg: Message?) {
-                main_refresh_layout.finishRefresh()
-            }
+        pullRefreshHandler = Handler {
+            main_refresh_layout.finishRefresh()
+            false
         }
 
         main_refresh_layout.setOnRefreshListener {
