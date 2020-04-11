@@ -3,7 +3,6 @@ package com.stone.persistent.library
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import android.view.WindowManager
 import android.widget.OverScroller
 
@@ -39,10 +38,9 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
         scrollerYField.isAccessible = true
         scrollerYObj = scrollerYField.get(this)
 
-        uiHandler = object : Handler(Looper.getMainLooper()) {
-            override fun handleMessage(msg: Message) {
-                syncFling()
-            }
+        uiHandler = Handler(Looper.getMainLooper()) {
+            syncFling()
+            false
         }
     }
 
