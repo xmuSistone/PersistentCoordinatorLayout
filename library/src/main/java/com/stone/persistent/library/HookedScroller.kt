@@ -21,11 +21,6 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
     private val uiHandler: Handler
 
     /**
-     * FPS刷新间隔（ms）
-     */
-    private val refreshInterval: Int
-
-    /**
      * 缓存的scrollerY对象
      */
     private var scrollerYObj: Any
@@ -36,10 +31,6 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
     private var durationField: Field
 
     init {
-        // 获取系统刷新频率
-        val refreshRate = getRefreshRate(context)
-        refreshInterval = (1000 / refreshRate).toInt()
-
         val scrollerYField = OverScroller::class.java.getDeclaredField("mScrollerY")
         scrollerYField.isAccessible = true
         scrollerYObj = scrollerYField.get(this)
@@ -88,9 +79,8 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
             // 获取fling动画时长
             val duration = durationField.get(scrollerYObj) as Int
 
-            // 在fling动画结束的前一帧，用handler启动fling传导
-            val flingInterval = duration - refreshInterval
-            uiHandler.sendEmptyMessageDelayed(1, flingInterval.toLong())
+            // 结束时用handler启动fling传导
+            uiHandler.sendEmptyMessageDelayed(1, duration.toLong())
         }
     }
 
