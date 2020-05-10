@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowManager
 import android.widget.OverScroller
+import java.lang.reflect.Field
 
 /**
  * 这是注入到Behavior的scroller
@@ -29,6 +30,11 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
      */
     private var scrollerYObj: Any
 
+    /**
+     * SplineOverScroller 内部的 mDuration 字段
+     */
+    private var durationField: Field
+
     init {
         // 获取系统刷新频率
         val refreshRate = getRefreshRate(context)
@@ -37,6 +43,12 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
         val scrollerYField = OverScroller::class.java.getDeclaredField("mScrollerY")
         scrollerYField.isAccessible = true
         scrollerYObj = scrollerYField.get(this)
+
+        // Android 9.0及以上，非公开Api接口被禁用，无法获取mDuration字段
+        // 此处伪装成系统身份，绕过 @hide 检查
+        val metaGetDeclaredField = Class::class.java.getDeclaredMethod("getDeclaredField", String::class.java)
+        durationField = metaGetDeclaredField.invoke(scrollerYObj.javaClass, "mDuration") as Field
+        durationField.isAccessible = true
 
         uiHandler = Handler(Looper.getMainLooper()) {
             syncFling()
@@ -74,8 +86,6 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
 
         if (velocityY < -200) {
             // 获取fling动画时长
-            val durationField = scrollerYObj.javaClass.getDeclaredField("mDuration")
-            durationField.isAccessible = true
             val duration = durationField.get(scrollerYObj) as Int
 
             // 在fling动画结束的前一帧，用handler启动fling传导
