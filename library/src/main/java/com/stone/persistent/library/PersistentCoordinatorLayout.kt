@@ -44,6 +44,7 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
     private fun hookScroller() {
         val lp = appBarLayout.layoutParams as LayoutParams
         val behavior = lp.behavior as AppBarLayout.Behavior
+        behavior.setDragCallback(PersistentCallback())
 
         val scrollerField =
             AppBarLayout.Behavior::class.java.superclass.superclass.getDeclaredField("scroller")
@@ -123,5 +124,9 @@ class PersistentCoordinatorLayout @JvmOverloads constructor(
 
     fun setInnerViewPager2(viewPager2: ViewPager2?) {
         this.innerViewPager2 = viewPager2
+    }
+
+    inner class PersistentCallback: AppBarLayout.Behavior.DragCallback() {
+        override fun canDrag(appBarLayout: AppBarLayout) = true
     }
 }

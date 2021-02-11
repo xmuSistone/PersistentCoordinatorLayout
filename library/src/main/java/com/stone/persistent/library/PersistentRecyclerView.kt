@@ -3,7 +3,6 @@ package com.stone.persistent.library
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
@@ -65,9 +64,5 @@ class PersistentRecyclerView @JvmOverloads constructor(
             lastTraverseView = parentView
             parentView = parentView.parent as View
         }
-    }
-
-    override fun isShown(): Boolean {
-        return isVisible
     }
 }
