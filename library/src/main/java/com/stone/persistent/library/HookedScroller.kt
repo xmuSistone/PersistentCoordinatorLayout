@@ -3,7 +3,6 @@ package com.stone.persistent.library
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.view.WindowManager
 import android.widget.OverScroller
 import java.lang.reflect.Field
 
@@ -51,10 +50,10 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
      * fling传导
      */
     private fun syncFling() {
-        val velocityY = this.getVelocityY()
-        if (velocityY < -200) {
+        val velocityY = currVelocity.toInt()
+        if (velocityY > 200) {
             val childRecyclerView = persistentProvider.invoke()
-            childRecyclerView?.fling(0, -velocityY)
+            childRecyclerView?.fling(0, velocityY)
         }
     }
 
@@ -69,11 +68,9 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
         minX: Int,
         maxX: Int,
         minY: Int,
-        maxY: Int,
-        overX: Int,
-        overY: Int
+        maxY: Int
     ) {
-        super.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY, overX, overY)
+        super.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY)
 
         if (velocityY < -200) {
             // 获取fling动画时长
@@ -89,24 +86,5 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
      */
     fun clearPendingMessages() {
         uiHandler.removeCallbacksAndMessages(null)
-    }
-
-
-    /**
-     * 获取Y方向Scroller速率
-     */
-    private fun getVelocityY(): Int {
-        val mCurrVelocityField = scrollerYObj.javaClass.getDeclaredField("mCurrVelocity")
-        mCurrVelocityField.isAccessible = true
-        val mCurrVelocity = mCurrVelocityField.get(scrollerYObj) as Float
-        return mCurrVelocity.toInt()
-    }
-
-    /**
-     * 获取刷新频率
-     */
-    private fun getRefreshRate(context: Context): Float {
-        var windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        return windowManager.defaultDisplay.refreshRate
     }
 }
