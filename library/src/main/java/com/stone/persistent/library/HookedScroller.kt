@@ -3,6 +3,7 @@ package com.stone.persistent.library
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.view.WindowManager
 import android.widget.OverScroller
 import java.lang.reflect.Field
 
@@ -22,14 +23,23 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
     /**
      * 缓存的scrollerY对象
      */
-    private var scrollerYObj: Any
+    private val scrollerYObj: Any
 
     /**
      * SplineOverScroller 内部的 mDuration 字段
      */
-    private var durationField: Field
+    private val durationField: Field
+
+    /**
+     * 系统刷新间隔（毫秒）
+     */
+    private val refreshInterval: Int
 
     init {
+        // 系统FPS刷新间隔
+        refreshInterval = getSystemRefreshInterval(context)
+
+        // 获取mScrollerY对象
         val scrollerYField = OverScroller::class.java.getDeclaredField("mScrollerY")
         scrollerYField.isAccessible = true
         scrollerYObj = scrollerYField.get(this)
@@ -77,7 +87,7 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
             val duration = durationField.get(scrollerYObj) as Int
 
             // 结束时用handler启动fling传导
-            uiHandler.sendEmptyMessageDelayed(1, duration.toLong())
+            uiHandler.sendEmptyMessageDelayed(1, (duration - refreshInterval).toLong())
         }
     }
 
@@ -86,5 +96,14 @@ class HookedScroller(context: Context, persistentProvider: () -> PersistentRecyc
      */
     fun clearPendingMessages() {
         uiHandler.removeCallbacksAndMessages(null)
+    }
+
+    /**
+     * 获取系统刷新间隔（毫秒）
+     */
+    private fun getSystemRefreshInterval(context: Context): Int {
+        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val refreshRate = windowManager.defaultDisplay.refreshRate
+        return (1000 / refreshRate).toInt()
     }
 }
